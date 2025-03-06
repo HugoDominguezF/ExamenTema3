@@ -1,86 +1,98 @@
 package fecha;
 
+/**
+ * Clase de Fecha que contendra todos los constructores y funciones necesarias para calcular una fecha
+ */
 public class Fecha {
-	public static final int DIEZ = 10;
-	private int dia; //d�a
-	private int mes; //mes
-	private int año; //a�o
+	private int d; //d�a
+	private int m; //mes
+	private int a; //a�o
 
 	
 	public Fecha() {
 
 	}
 
-	
+	/**
+	 * El constructor Fecha contruira una variable con los parametros dia, mes y anio
+	 * @param dia variable que contendra el numero de dias
+	 * @param mes variable que contendra el numero de meses
+	 * @param anio variable que contendra el numero de anios
+	 */
 	public Fecha(int dia, int mes, int anio) {
-		this.dia = dia;
-		this.mes = mes;
-		this.año = anio;
+		this.d = dia;
+		this.m = mes;
+		this.a = anio;
 	}
 
 	
-	
+	/**
+	 * Esta funcion corrige si una fecha dada es correcta como puede ser un dia 34, o un mes 15. Esto lo corregira 
+	 * mediante un switch que controlara los meses distintos
+	 * @return true si lo es, false si tiene alguna inconsistencia
+	 */
 	public boolean fechaCorrecta() {
-		boolean diaCorrecto;
-		boolean mesCorrecto;
-		boolean anioCorrecto;
-		anioCorrecto = año > 0;
-		mesCorrecto = mes >= 1 && mes <= 12;
-		boolean diaMayor1 = dia >= 1;
-		switch (mes) {
+		boolean diaCorrecto, mesCorrecto, anioCorrecto;
+		anioCorrecto = a > 0;
+		mesCorrecto = m >= 1 && m <= 12;
+		switch (m) {
 		case 2:
 			if (esBisiesto()) {
-				diaCorrecto = diaMayor1 && dia <= 29;
+				diaCorrecto = d >= 1 && d <= 29;
 			} else {
-				diaCorrecto = diaMayor1 && dia <= 28;
+				diaCorrecto = d >= 1 && d <= 28;
 			}
 			break;
 		case 4:
 		case 6:
 		case 9:
 		case 11:
-			diaCorrecto = diaMayor1 && dia <= 30;
+			diaCorrecto = d >= 1 && d <= 30;
 			break;
 		default:
-			diaCorrecto = diaMayor1 && dia <= 31;
+			diaCorrecto = d >= 1 && d <= 31;
 		}
 		return diaCorrecto && mesCorrecto && anioCorrecto;
 	}
 
 	// M�todo esBisiesto. Solo lo usa fechaCorrecta, por eso es privado
+	/**
+	 * Esta Funcion comprobara si el año es bisiesto
+	 * @return true si lo es, false si no
+	 */
 	private boolean esBisiesto() {
-		return (año % 4 == 0 && año % 100 != 0 || año % 400 == 0);
+		boolean esBisiesto = (a % 4 == 0 && a % 100 != 0 || a % 400 == 0);
+		return esBisiesto;
 	}
 
 	// M�todo diaSiguiente
-	public void nextDay() {
-		dia++;
+	public void diaSiguiente() {
+		d++;
 		if (!fechaCorrecta()) {
-			dia = 1;
-			mes++;
+			d = 1;
+			m++;
 			if (!fechaCorrecta()) {
-				mes = 1;
-				año++;
+				m = 1;
+				a++;
 			}
 		}
 	}
 
 	// M�todo toString
+	/**
+	 * esta funcion imprimira el resultado de la fecha dada, segun si son menores que 10 el dia y 
+	 * los meses cambiara el print para poner un 0 delante
+	 */
 	public String toString() {
-		
-		String texto;
-		
-		if (dia < DIEZ && mes < DIEZ) {
-			texto= "0" + dia + "-0" + mes + "-" + año;
-		} else if (dia < DIEZ && mes >= DIEZ) {
-			texto= "0" + dia + "-" + mes + "-" + año;
-		} else if (dia >= DIEZ && mes < DIEZ) {
-			texto= dia + "-0" + mes + "-" + año;
+		if (d < 10 && m < 10) {
+			return "0" + d + "-0" + m + "-" + a;
+		} else if (d < 10 && m >= 10) {
+			return "0" + d + "-" + m + "-" + a;
+		} else if (d >= 10 && m < 10) {
+			return d + "-0" + m + "-" + a;
 		} else {
-			texto= dia + "-" + mes + "-" + año;
+			return d + "-" + m + "-" + a;
 		}
-		
-		return texto;
 	}
 
 }
